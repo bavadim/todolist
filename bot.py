@@ -29,11 +29,20 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     message = update.message.text
     task = create_task_from_message(message)
 
-    reply = f"*{task.title}*\n{task.description}"
+    reply_lines = [
+        f"✅ #{task.id} {task.title}",
+        f"Тип: {task.classification}",
+        "План:",
+        task.plan,
+    ]
+    if task.duplicates:
+        dup_line = ", ".join(f"#{d}" for d in task.duplicates)
+        reply_lines.append(f"Возможные дубли: {dup_line}")
     if task.links:
-        reply += "\n" + "\n".join(task.links)
+        reply_lines.extend(task.links)
+    reply = "\n".join(reply_lines)
 
-    await update.message.reply_markdown_v2(reply)
+    await update.message.reply_text(reply)
 
 
 def main() -> None:
