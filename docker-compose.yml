@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  gdrive:
+    image: isaacphi/mcp-gdrive:latest
+    ports:
+      - "8071:80"
+  notion:
+    image: makenotion/notion-mcp-server:latest
+    ports:
+      - "8072:80"
+  github:
+    image: github/github-mcp-server:latest
+    ports:
+      - "8073:80"
